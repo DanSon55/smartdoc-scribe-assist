@@ -1,69 +1,116 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Stethoscope, User, FileText, Settings, Home } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const location = useLocation();
+
   return (
     <div className="flex min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 border-r p-4 bg-white">
-        <div className="flex items-center gap-2 py-6">
-          <Stethoscope className="h-8 w-8 text-medical-primary" />
-          <h1 className="text-2xl font-bold text-medical-dark">SmartDoc</h1>
+      <aside 
+        className={cn(
+          "fixed md:static inset-y-0 left-0 z-20 flex flex-col w-64 transition-transform duration-300 transform bg-white border-r shadow-sm",
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0 md:w-20"
+        )}
+      >
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-2">
+            <Stethoscope className="h-8 w-8 text-medical-primary" />
+            {isSidebarOpen && <h1 className="text-xl font-bold bg-gradient-to-r from-medical-primary to-medical-secondary bg-clip-text text-transparent">SmartDoc</h1>}
+          </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="rounded-full md:hidden" 
+            onClick={() => setIsSidebarOpen(false)}
+          >
+            <X size={18} />
+          </Button>
         </div>
         
-        <nav className="space-y-2 mt-6">
-          <NavLink to="/" icon={<Home size={18} />} text="Главная" />
-          <NavLink to="/patients" icon={<User size={18} />} text="Пациенты" />
-          <NavLink to="/records" icon={<FileText size={18} />} text="Записи" />
-          <NavLink to="/settings" icon={<Settings size={18} />} text="Настройки" />
+        <nav className="flex-1 px-3 py-6 space-y-1">
+          <NavLink to="/" icon={<Home size={20} />} text="Главная" expanded={isSidebarOpen} active={location.pathname === '/'} />
+          <NavLink to="/patients" icon={<User size={20} />} text="Пациенты" expanded={isSidebarOpen} active={location.pathname === '/patients'} />
+          <NavLink to="/records" icon={<FileText size={20} />} text="Записи" expanded={isSidebarOpen} active={location.pathname === '/records'} />
+          <NavLink to="/settings" icon={<Settings size={20} />} text="Настройки" expanded={isSidebarOpen} active={location.pathname === '/settings'} />
         </nav>
         
-        <div className="mt-auto py-4">
-          <div className="flex items-center gap-2 p-2">
-            <div className="w-8 h-8 rounded-full bg-medical-primary flex items-center justify-center text-white">
-              <span>ДИ</span>
-            </div>
-            <div>
-              <p className="text-sm font-medium">Д-р Иванов</p>
-              <p className="text-xs text-muted-foreground">Терапевт</p>
-            </div>
+        <div className="p-4 border-t">
+          <div className={cn("flex items-center gap-3", !isSidebarOpen && "justify-center")}>
+            <Avatar className="h-9 w-9 border-2 border-medical-light">
+              <AvatarFallback className="bg-medical-primary text-white text-sm">ДИ</AvatarFallback>
+            </Avatar>
+            {isSidebarOpen && (
+              <div className="flex flex-col">
+                <p className="text-sm font-medium">Д-р Иванов</p>
+                <p className="text-xs text-muted-foreground">Терапевт</p>
+              </div>
+            )}
           </div>
         </div>
       </aside>
       
       {/* Main content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col w-full">
         {/* Header */}
-        <header className="border-b bg-white h-16 flex items-center px-4 md:px-6 justify-between">
-          <div className="md:hidden flex items-center">
-            <Stethoscope className="h-6 w-6 text-medical-primary mr-2" />
-            <span className="font-bold text-lg text-medical-dark">SmartDoc</span>
-          </div>
-          
-          <div className="hidden md:block">
-            <h2 className="text-lg font-medium">Рабочее пространство врача</h2>
+        <header className="sticky top-0 z-10 border-b bg-white/80 backdrop-blur-md h-16 flex items-center px-4 md:px-6 justify-between">
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="rounded-full md:hidden"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <Menu size={20} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden md:flex"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              <Menu size={20} />
+            </Button>
+            
+            <div className="hidden md:flex relative w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input 
+                placeholder="Поиск..." 
+                className="pl-10 h-9 bg-muted/50 focus-visible:ring-medical-primary" 
+              />
+            </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" className="md:hidden">
-              <Settings size={18} />
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell size={20} />
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0">
+                2
+              </Badge>
             </Button>
-            <div className="md:hidden w-8 h-8 rounded-full bg-medical-primary flex items-center justify-center text-white">
-              <span>ДИ</span>
+            <div className="hidden md:block">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-medical-accent"></div>
+                <span className="text-sm font-medium">В сети</span>
+              </div>
             </div>
           </div>
         </header>
         
         {/* Page content */}
-        <main className="flex-1 p-4 md:p-6 overflow-auto">
+        <main className="flex-1 p-4 md:p-6 overflow-auto animate-fade-in">
           {children}
         </main>
       </div>
@@ -75,23 +122,24 @@ interface NavLinkProps {
   to: string;
   icon: React.ReactNode;
   text: string;
+  expanded: boolean;
+  active: boolean;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, icon, text }) => {
-  const isActive = window.location.pathname === to;
-  
+const NavLink: React.FC<NavLinkProps> = ({ to, icon, text, expanded, active }) => {
   return (
     <Link 
       to={to} 
       className={cn(
-        "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors",
-        isActive 
-          ? "bg-medical-light text-medical-dark font-medium" 
-          : "text-muted-foreground hover:bg-medical-light/50 hover:text-medical-primary"
+        "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+        active 
+          ? "bg-medical-light text-medical-primary font-medium" 
+          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+        !expanded && "justify-center px-2"
       )}
     >
       {icon}
-      <span>{text}</span>
+      {expanded && <span>{text}</span>}
     </Link>
   );
 };

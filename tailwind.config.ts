@@ -64,10 +64,13 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				medical: {
-					primary: '#2C7BBE',
-					light: '#F0F7FF',
-					dark: '#005EB8',
-					accent: '#20AE94'
+					primary: '#3B82F6', // Яркий синий
+					secondary: '#0EA5E9', // Голубой
+					light: '#EFF6FF',
+					dark: '#1E40AF',
+					accent: '#10B981', // Мятно-зеленый
+					warning: '#F59E0B', // Янтарный
+					danger: '#EF4444' // Красный
 				}
 			},
 			borderRadius: {
@@ -93,14 +96,35 @@ export default {
 					}
 				},
 				'pulse-record': {
-					'0%, 100%': { transform: 'scale(1)' },
-					'50%': { transform: 'scale(1.1)' },
+					'0%, 100%': { transform: 'scale(1)', opacity: '1' },
+					'50%': { transform: 'scale(1.1)', opacity: '0.8' },
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(10px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'slide-down': {
+					'0%': { transform: 'translateY(-10px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-record': 'pulse-record 2s infinite'
+				'pulse-record': 'pulse-record 2s infinite cubic-bezier(0.4, 0, 0.6, 1)',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.4s ease-out',
+				'slide-down': 'slide-down 0.4s ease-out'
+			},
+			boxShadow: {
+				'soft': '0 2px 10px rgba(0, 0, 0, 0.08)',
+				'medium': '0 4px 20px rgba(0, 0, 0, 0.12)',
+				'card': '0 8px 30px rgba(0, 0, 0, 0.08)',
+				'glow': '0 0 15px rgba(59, 130, 246, 0.5)'
 			}
 		}
 	},
