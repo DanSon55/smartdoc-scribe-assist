@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { usePatient, PatientProvider } from '@/contexts/PatientContext';
+import { usePatient } from '@/contexts/PatientContext';
 import RecordingPanel from '@/components/RecordingPanel';
 import TranscriptPanel from '@/components/TranscriptPanel';
 import StructuredDataPanel from '@/components/StructuredDataPanel';
@@ -69,11 +69,9 @@ const Dashboard = () => {
 // Application wrapper with context
 const Index = () => {
   return (
-    <PatientProvider>
-      <Layout>
-        <Dashboard />
-      </Layout>
-    </PatientProvider>
+    <Layout>
+      <Dashboard />
+    </Layout>
   );
 };
 

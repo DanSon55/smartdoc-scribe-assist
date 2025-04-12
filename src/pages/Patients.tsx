@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Layout from '@/components/Layout';
-import { PatientProvider, usePatient } from '@/contexts/PatientContext';
+import { usePatient } from '@/contexts/PatientContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -79,11 +79,9 @@ const PatientsList = () => {
 
 const Patients = () => {
   return (
-    <PatientProvider>
-      <Layout>
-        <PatientsList />
-      </Layout>
-    </PatientProvider>
+    <Layout>
+      <PatientsList />
+    </Layout>
   );
 };
 

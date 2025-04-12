@@ -1,7 +1,5 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
-import { PatientProvider } from '@/contexts/PatientContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from "@/components/ui/switch";
 import { Label } from '@/components/ui/label';
@@ -197,11 +195,9 @@ const SettingsContent = () => {
 
 const Settings = () => {
   return (
-    <PatientProvider>
-      <Layout>
-        <SettingsContent />
-      </Layout>
-    </PatientProvider>
+    <Layout>
+      <SettingsContent />
+    </Layout>
   );
 };
 
