@@ -73,6 +73,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -90,7 +91,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans transition-colors duration-200;
   }
 }
 
@@ -100,7 +101,7 @@
   }
   
   .glass-effect {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+    @apply bg-white/80 dark:bg-black/50 backdrop-blur-md border border-white/20 dark:border-white/10;
   }
 }
 
@@ -112,6 +113,11 @@
   overflow: hidden;
   border-radius: 12px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark .waveform-container {
+  background: rgba(30, 41, 59, 0.6);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .waveform {
@@ -130,6 +136,10 @@
   background-color: #3B82F6;
   opacity: 0.8;
   border-radius: 1px;
+}
+
+.dark .waveform-bar {
+  background-color: #60A5FA;
 }
 
 @keyframes animate-wave {
