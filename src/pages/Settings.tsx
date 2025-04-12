@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from "@/hooks/use-toast";
-import { ThemeSelector } from '@/components/ThemeSelector';
 
 const SettingsContent = () => {
   const { toast } = useToast();
@@ -28,9 +27,6 @@ const SettingsContent = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Theme Settings */}
-        <ThemeSelector />
-        
         {/* General Settings */}
         <Card>
           <CardHeader>
