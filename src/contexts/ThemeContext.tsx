@@ -48,6 +48,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       root.classList.add(theme);
       localStorage.setItem('theme', theme);
     }
+
+    // Add data attribute for additional styling and consistency
+    root.setAttribute('data-theme', theme === 'system' 
+      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+      : theme
+    );
   }, [theme]);
 
   // Listen for changes in system theme
@@ -58,7 +64,9 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       if (theme === 'system') {
         const root = window.document.documentElement;
         root.classList.remove('light', 'dark');
-        root.classList.add(mediaQuery.matches ? 'dark' : 'light');
+        const systemTheme = mediaQuery.matches ? 'dark' : 'light';
+        root.classList.add(systemTheme);
+        root.setAttribute('data-theme', systemTheme);
       }
     };
 
