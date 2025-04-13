@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Layout from '@/components/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from "@/hooks/use-toast";
+import ProfileLink from '@/components/ProfileLink';
 
 const SettingsContent = () => {
   const { toast } = useToast();
@@ -27,6 +27,9 @@ const SettingsContent = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Profile Link */}
+        <ProfileLink />
+        
         {/* General Settings */}
         <Card>
           <CardHeader>
@@ -66,6 +69,7 @@ const SettingsContent = () => {
           </CardContent>
         </Card>
         
+        {/* Keep the rest of the settings cards */}
         {/* Speech Recognition Settings */}
         <Card>
           <CardHeader>
