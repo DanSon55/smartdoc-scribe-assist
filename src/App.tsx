@@ -13,6 +13,8 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistRegistration from "./pages/TherapistRegistration";
+import PatientDashboard from "./pages/PatientDashboard";
+import UserTypeSelector from "./components/UserTypeSelector";
 
 const queryClient = new QueryClient();
 
@@ -25,12 +27,14 @@ const App = () => (
             <Toaster />
             <Sonner />
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<UserTypeSelector />} />
+              <Route path="/doctor-dashboard" element={<Index />} />
               <Route path="/patients" element={<Patients />} />
               <Route path="/records" element={<Records />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<TherapistProfile />} />
               <Route path="/register" element={<TherapistRegistration />} />
+              <Route path="/patient-dashboard" element={<PatientDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

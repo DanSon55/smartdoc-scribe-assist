@@ -35,14 +35,18 @@ interface RecordingData {
   transcript: TranscriptSegment[];
 }
 
+export type UserType = 'doctor' | 'patient' | null;
+
 interface PatientContextType {
   currentPatient: Patient | null;
   currentAppointment: Appointment | null;
   patients: Patient[];
   appointments: Appointment[];
   recordingData: RecordingData;
+  userType: UserType;
   setCurrentPatient: (patient: Patient) => void;
   setCurrentAppointment: (appointment: Appointment) => void;
+  setUserType: (type: UserType) => void;
   startRecording: () => void;
   stopRecording: () => void;
   generateReport: () => void;
@@ -108,6 +112,7 @@ export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [appointments] = useState<Appointment[]>(mockAppointments);
   const [currentPatient, setCurrentPatient] = useState<Patient | null>(null);
   const [currentAppointment, setCurrentAppointment] = useState<Appointment | null>(null);
+  const [userType, setUserType] = useState<UserType>(null);
   const [recordingData, setRecordingData] = useState<RecordingData>({
     isRecording: false,
     duration: 0,
@@ -203,6 +208,14 @@ export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   };
 
+  // Load user type from localStorage on initial render
+  React.useEffect(() => {
+    const savedUserType = localStorage.getItem('userType');
+    if (savedUserType === 'doctor' || savedUserType === 'patient') {
+      setUserType(savedUserType);
+    }
+  }, []);
+
   // Create context value
   const contextValue: PatientContextType = {
     currentPatient,
@@ -210,8 +223,10 @@ export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ child
     patients,
     appointments,
     recordingData,
+    userType,
     setCurrentPatient,
     setCurrentAppointment,
+    setUserType,
     startRecording,
     stopRecording,
     generateReport,

@@ -1,13 +1,14 @@
 
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube, FileMedical } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useTherapist } from '@/contexts/TherapistContext';
+import { usePatient } from '@/contexts/PatientContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,7 +17,9 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const { currentTherapist } = useTherapist();
+  const { userType } = usePatient();
 
   // Get first letters for avatar fallback
   const getInitials = () => {
@@ -28,6 +31,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }
     return nameParts[0][0].toUpperCase();
   };
+
+  // Redirect to user type selection if no user type is set
+  useEffect(() => {
+    if (userType === null && location.pathname !== '/') {
+      navigate('/');
+    }
+  }, [userType, navigate, location.pathname]);
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -54,10 +64,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
         
         <nav className="flex-1 px-3 py-6 space-y-1">
-          <NavLink to="/" icon={<Home size={20} />} text="Главная" expanded={isSidebarOpen} active={location.pathname === '/'} />
-          <NavLink to="/patients" icon={<User size={20} />} text="Пациенты" expanded={isSidebarOpen} active={location.pathname === '/patients'} />
-          <NavLink to="/records" icon={<FileText size={20} />} text="Записи" expanded={isSidebarOpen} active={location.pathname === '/records'} />
-          <NavLink to="/settings" icon={<Settings size={20} />} text="Настройки" expanded={isSidebarOpen} active={location.pathname === '/settings'} />
+          {userType === 'doctor' ? (
+            // Doctor navigation
+            <>
+              <NavLink to="/doctor-dashboard" icon={<Home size={20} />} text="Главная" expanded={isSidebarOpen} active={location.pathname === '/doctor-dashboard'} />
+              <NavLink to="/patients" icon={<User size={20} />} text="Пациенты" expanded={isSidebarOpen} active={location.pathname === '/patients'} />
+              <NavLink to="/records" icon={<FileText size={20} />} text="Записи" expanded={isSidebarOpen} active={location.pathname === '/records'} />
+              <NavLink to="/settings" icon={<Settings size={20} />} text="Настройки" expanded={isSidebarOpen} active={location.pathname === '/settings'} />
+            </>
+          ) : (
+            // Patient navigation
+            <>
+              <NavLink to="/patient-dashboard" icon={<Home size={20} />} text="Главная" expanded={isSidebarOpen} active={location.pathname === '/patient-dashboard'} />
+              <NavLink to="/patient-dashboard" icon={<Stethoscope size={20} />} text="Найти врача" expanded={isSidebarOpen} active={false} />
+              <NavLink to="/patient-dashboard" icon={<FileMedical size={20} />} text="Медкарта" expanded={isSidebarOpen} active={false} />
+              <NavLink to="/patient-dashboard" icon={<TestTube size={20} />} text="Анализы" expanded={isSidebarOpen} active={false} />
+            </>
+          )}
         </nav>
         
         <div className="p-4 border-t">
@@ -72,10 +95,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {isSidebarOpen && (
               <div className="flex flex-col">
                 <p className="text-sm font-medium">
-                  {currentTherapist ? currentTherapist.name : 'Гость'}
+                  {currentTherapist ? currentTherapist.name : userType === 'patient' ? 'Пациент' : 'Гость'}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {currentTherapist ? currentTherapist.specialty : 'Не указано'}
+                  {currentTherapist ? currentTherapist.specialty : userType === 'patient' ? 'Личный кабинет' : 'Не указано'}
                 </p>
               </div>
             )}
