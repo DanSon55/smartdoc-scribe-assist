@@ -7,6 +7,9 @@ export interface Patient {
   name: string;
   age: number;
   gender: 'male' | 'female';
+  status?: 'pending' | 'active' | 'invited';
+  price?: number;
+  isPaid?: boolean;
 }
 
 export interface Appointment {
@@ -43,6 +46,9 @@ interface PatientContextType {
   startRecording: () => void;
   stopRecording: () => void;
   generateReport: () => void;
+  deletePatient: (patientId: string) => void;
+  sendInvitation: (patientId: string, price?: number) => void;
+  acceptInvitation: (patientId: string) => void;
   structuredData: {
     complaints: string[];
     anamnesis: string[];
@@ -53,9 +59,12 @@ interface PatientContextType {
 
 // Default mock data
 const mockPatients: Patient[] = [
-  { id: '1', name: 'Иванов Иван Иванович', age: 45, gender: 'male' },
-  { id: '2', name: 'Петрова Анна Сергеевна', age: 32, gender: 'female' },
-  { id: '3', name: 'Сидоров Павел Николаевич', age: 58, gender: 'male' },
+  { id: '1', name: 'Иванов Иван Иванович', age: 45, gender: 'male', status: 'active' },
+  { id: '2', name: 'Петрова Анна Сергеевна', age: 32, gender: 'female', status: 'pending', price: 2500 },
+  { id: '3', name: 'Сидоров Павел Николаевич', age: 58, gender: 'male', status: 'invited' },
+  { id: '4', name: 'Козлова Мария Александровна', age: 29, gender: 'female' },
+  { id: '5', name: 'Новиков Алексей Петрович', age: 41, gender: 'male', status: 'pending' },
+  { id: '6', name: 'Морозова Екатерина Ивановна', age: 36, gender: 'female', status: 'active', price: 3500, isPaid: true }
 ];
 
 const mockAppointments: Appointment[] = [
@@ -95,7 +104,7 @@ const PatientContext = createContext<PatientContextType | undefined>(undefined);
 
 // Provider component
 export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [patients] = useState<Patient[]>(mockPatients);
+  const [patients, setPatients] = useState<Patient[]>(mockPatients);
   const [appointments] = useState<Appointment[]>(mockAppointments);
   const [currentPatient, setCurrentPatient] = useState<Patient | null>(null);
   const [currentAppointment, setCurrentAppointment] = useState<Appointment | null>(null);
@@ -112,6 +121,38 @@ export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ child
     diagnosis: ['Гастрит (K29.7)', 'Пищевое отравление (A05.9)'],
     recommendations: ['Щадящая диета', 'Сорбенты', 'Приём жидкости', 'Контроль симптомов', 'ОАК', 'ОАМ', 'УЗИ брюшной полости']
   });
+
+  // Delete patient function
+  const deletePatient = (patientId: string) => {
+    setPatients(prevPatients => prevPatients.filter(patient => patient.id !== patientId));
+    
+    // If current patient is being deleted, reset current patient
+    if (currentPatient?.id === patientId) {
+      setCurrentPatient(null);
+    }
+  };
+  
+  // Send invitation function
+  const sendInvitation = (patientId: string, price?: number) => {
+    setPatients(prevPatients => 
+      prevPatients.map(patient => 
+        patient.id === patientId 
+          ? { ...patient, status: 'pending', price: price || 0 } 
+          : patient
+      )
+    );
+  };
+  
+  // Accept invitation function
+  const acceptInvitation = (patientId: string) => {
+    setPatients(prevPatients => 
+      prevPatients.map(patient => 
+        patient.id === patientId 
+          ? { ...patient, status: 'active' } 
+          : patient
+      )
+    );
+  };
 
   // Mock recording functions
   const startRecording = () => {
@@ -174,6 +215,9 @@ export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ child
     startRecording,
     stopRecording,
     generateReport,
+    deletePatient,
+    sendInvitation,
+    acceptInvitation,
     structuredData
   };
 
