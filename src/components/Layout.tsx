@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { useTherapist } from '@/contexts/TherapistContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,18 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
+  const { currentTherapist } = useTherapist();
+
+  // Get first letters for avatar fallback
+  const getInitials = () => {
+    if (!currentTherapist) return 'ДИ';
+    
+    const nameParts = currentTherapist.name.split(' ');
+    if (nameParts.length >= 2) {
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+    }
+    return nameParts[0][0].toUpperCase();
+  };
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -50,12 +63,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="p-4 border-t">
           <div className={cn("flex items-center gap-3", !isSidebarOpen && "justify-center")}>
             <Avatar className="h-9 w-9 border-2 border-medical-light">
-              <AvatarFallback className="bg-medical-primary text-white text-sm">ДИ</AvatarFallback>
+              {currentTherapist?.avatarUrl ? (
+                <AvatarImage src={currentTherapist.avatarUrl} />
+              ) : (
+                <AvatarFallback className="bg-medical-primary text-white text-sm">{getInitials()}</AvatarFallback>
+              )}
             </Avatar>
             {isSidebarOpen && (
               <div className="flex flex-col">
-                <p className="text-sm font-medium">Д-р Иванов</p>
-                <p className="text-xs text-muted-foreground">Терапевт</p>
+                <p className="text-sm font-medium">
+                  {currentTherapist ? currentTherapist.name : 'Гость'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {currentTherapist ? currentTherapist.specialty : 'Не указано'}
+                </p>
               </div>
             )}
           </div>
