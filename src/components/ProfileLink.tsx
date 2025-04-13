@@ -15,7 +15,7 @@ const ProfileLink = () => {
         <CardTitle>Профиль терапевта</CardTitle>
         <CardDescription>
           {currentTherapist 
-            ? "Управление данными вашего профиля" 
+            ? `${currentTherapist.name}` 
             : "Создайте профиль терапевта для работы с системой"
           }
         </CardDescription>
