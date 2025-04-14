@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState } from 'react';
+import * as React from 'react';
 import { Therapist } from '@/types/therapist';
 
 interface TherapistContextType {
@@ -8,10 +8,10 @@ interface TherapistContextType {
   updateTherapist: (data: Partial<Therapist>) => void;
 }
 
-const TherapistContext = createContext<TherapistContextType | undefined>(undefined);
+const TherapistContext = React.createContext<TherapistContextType | undefined>(undefined);
 
 export const TherapistProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentTherapist, setCurrentTherapist] = useState<Therapist | null>(null);
+  const [currentTherapist, setCurrentTherapist] = React.useState<Therapist | null>(null);
 
   const updateTherapist = (data: Partial<Therapist>) => {
     if (!currentTherapist) return;
@@ -48,7 +48,7 @@ export const TherapistProvider = ({ children }: { children: React.ReactNode }) =
 };
 
 export const useTherapist = () => {
-  const context = useContext(TherapistContext);
+  const context = React.useContext(TherapistContext);
   if (context === undefined) {
     throw new Error('useTherapist must be used within a TherapistProvider');
   }

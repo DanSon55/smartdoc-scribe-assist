@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -6,7 +5,7 @@ import { usePatient } from '@/contexts/PatientContext';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Stethoscope, FileText, TestTube, Bell, DollarSign, Euro, Yen, PoundSterling } from 'lucide-react';
+import { Stethoscope, FileText, TestTube, Bell, DollarSign, Euro, PoundSterling } from 'lucide-react';
 import { useToast } from "@/components/ui/use-toast";
 import { 
   Dialog,
