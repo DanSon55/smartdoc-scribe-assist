@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
@@ -18,11 +19,24 @@ const PatientDashboard = () => {
     }
   }, [userType, navigate]);
 
+  // Handle tab navigation
+  const handleTabClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <Layout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">Личный кабинет пациента</h1>
+          <div className="space-x-2">
+            <Button variant="outline" onClick={() => navigate('/patient-settings')}>
+              Настройки
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/patient-profile')}>
+              Редактировать профиль
+            </Button>
+          </div>
         </div>
         
         <Tabs defaultValue="doctors" className="w-full">
@@ -41,7 +55,8 @@ const PatientDashboard = () => {
               {[
                 { name: "Петров Сергей Иванович", specialty: "Терапевт", rating: 4.8, price: 2500 },
                 { name: "Смирнова Анна Павловна", specialty: "Кардиолог", rating: 4.9, price: 3500 },
-                { name: "Кузнецов Дмитрий Александрович", specialty: "Невролог", rating: 4.7, price: 3000 }
+                { name: "Кузнецов Дмитрий Александрович", specialty: "Невролог", rating: 4.7, price: 3000 },
+                { name: "Данияр Асылбеков", specialty: "Психолог (аутизм)", rating: 5.0, price: 4000 }
               ].map((doctor, index) => (
                 <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow">
                   <CardHeader className="bg-medical-light">

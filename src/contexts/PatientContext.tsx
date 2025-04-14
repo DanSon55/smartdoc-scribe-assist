@@ -110,7 +110,13 @@ const PatientContext = createContext<PatientContextType | undefined>(undefined);
 export const PatientProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [patients, setPatients] = useState<Patient[]>(mockPatients);
   const [appointments] = useState<Appointment[]>(mockAppointments);
-  const [currentPatient, setCurrentPatient] = useState<Patient | null>(null);
+  const [currentPatient, setCurrentPatient] = useState<Patient | null>({
+    id: '7',
+    name: 'Данияр Аслыбеков',
+    age: 25,
+    gender: 'male',
+    status: 'active'
+  });
   const [currentAppointment, setCurrentAppointment] = useState<Appointment | null>(null);
   const [userType, setUserType] = useState<UserType>(null);
   const [recordingData, setRecordingData] = useState<RecordingData>({

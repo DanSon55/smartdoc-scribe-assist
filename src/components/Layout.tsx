@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube, FileSymlink } from 'lucide-react';
+import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -78,6 +79,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <NavLink to="/patient-dashboard" icon={<Stethoscope size={20} />} text="Найти врача" expanded={isSidebarOpen} active={false} />
               <NavLink to="/patient-dashboard" icon={<FileText size={20} />} text="Медкарта" expanded={isSidebarOpen} active={false} />
               <NavLink to="/patient-dashboard" icon={<TestTube size={20} />} text="Анализы" expanded={isSidebarOpen} active={false} />
+              <NavLink to="/patient-settings" icon={<Settings size={20} />} text="Настройки" expanded={isSidebarOpen} active={location.pathname === '/patient-settings'} />
+              <NavLink to="/patient-profile" icon={<User size={20} />} text="Профиль" expanded={isSidebarOpen} active={location.pathname === '/patient-profile'} />
             </>
           )}
         </nav>

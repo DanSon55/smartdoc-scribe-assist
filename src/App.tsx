@@ -14,6 +14,8 @@ import NotFound from "./pages/NotFound";
 import TherapistProfile from "./pages/TherapistProfile";
 import TherapistRegistration from "./pages/TherapistRegistration";
 import PatientDashboard from "./pages/PatientDashboard";
+import PatientProfile from "./pages/PatientProfile";
+import PatientSettings from "./pages/PatientSettings";
 import UserTypeSelector from "./components/UserTypeSelector";
 
 const queryClient = new QueryClient();
@@ -35,6 +37,8 @@ const App = () => (
               <Route path="/profile" element={<TherapistProfile />} />
               <Route path="/register" element={<TherapistRegistration />} />
               <Route path="/patient-dashboard" element={<PatientDashboard />} />
+              <Route path="/patient-profile" element={<PatientProfile />} />
+              <Route path="/patient-settings" element={<PatientSettings />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
