@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube, FileSymlink } from 'lucide-react';
@@ -77,7 +76,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <>
               <NavLink to="/patient-dashboard" icon={<Home size={20} />} text="Главная" expanded={isSidebarOpen} active={location.pathname === '/patient-dashboard'} />
               <NavLink to="/patient-dashboard" icon={<Stethoscope size={20} />} text="Найти врача" expanded={isSidebarOpen} active={false} />
-              <NavLink to="/patient-dashboard" icon={<FileMedical size={20} />} text="Медкарта" expanded={isSidebarOpen} active={false} />
+              <NavLink to="/patient-dashboard" icon={<FileText size={20} />} text="Медкарта" expanded={isSidebarOpen} active={false} />
               <NavLink to="/patient-dashboard" icon={<TestTube size={20} />} text="Анализы" expanded={isSidebarOpen} active={false} />
             </>
           )}

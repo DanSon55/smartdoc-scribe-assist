@@ -5,7 +5,7 @@ import { usePatient } from '@/contexts/PatientContext';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Stethoscope, FileText, FileSymlink, TestTube } from 'lucide-react';
+import { Stethoscope, FileText, TestTube } from 'lucide-react';
 
 const PatientDashboard = () => {
   const { userType, patients, appointments } = usePatient();
@@ -115,7 +115,7 @@ const PatientDashboard = () => {
             
             <Card>
               <CardContent className="p-8 flex flex-col items-center justify-center text-center">
-                <FileSymlink className="h-12 w-12 text-muted-foreground mb-4" />
+                <FileText className="h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-medium mb-2">Медицинская карта</h3>
                 <p className="text-muted-foreground mb-4">
                   Здесь будет отображаться ваша медицинская карта и история болезней
