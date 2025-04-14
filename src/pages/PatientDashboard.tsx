@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import { usePatient } from '@/contexts/PatientContext';
@@ -7,10 +7,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Stethoscope, FileText, TestTube } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
 
 const PatientDashboard = () => {
   const { userType, patients, appointments } = usePatient();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
 
   // Redirect if not a patient
   useEffect(() => {
@@ -22,6 +25,15 @@ const PatientDashboard = () => {
   // Handle tab navigation
   const handleTabClick = (path: string) => {
     navigate(path);
+  };
+
+  const handleAppointmentRequest = (doctorName: string) => {
+    setSelectedDoctor(doctorName);
+    toast({
+      title: "Запись на приём",
+      description: `Вы успешно записались на приём к врачу: ${doctorName}`,
+      duration: 5000,
+    });
   };
 
   return (
@@ -51,12 +63,11 @@ const PatientDashboard = () => {
             <h2 className="text-xl font-semibold">Доступные специалисты</h2>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Mock doctor data */}
+              {/* Mock doctor data - removed the specific doctor entry */}
               {[
                 { name: "Петров Сергей Иванович", specialty: "Терапевт", rating: 4.8, price: 2500 },
                 { name: "Смирнова Анна Павловна", specialty: "Кардиолог", rating: 4.9, price: 3500 },
-                { name: "Кузнецов Дмитрий Александрович", specialty: "Невролог", rating: 4.7, price: 3000 },
-                { name: "Данияр Асылбеков", specialty: "Психолог (аутизм)", rating: 5.0, price: 4000 }
+                { name: "Кузнецов Дмитрий Александрович", specialty: "Невролог", rating: 4.7, price: 3000 }
               ].map((doctor, index) => (
                 <Card key={index} className="overflow-hidden hover:shadow-md transition-shadow">
                   <CardHeader className="bg-medical-light">
@@ -75,7 +86,10 @@ const PatientDashboard = () => {
                       <span className="text-sm font-medium">Рейтинг: {doctor.rating}/5.0</span>
                       <span className="text-sm font-semibold">{doctor.price} ₽/консультация</span>
                     </div>
-                    <Button className="w-full bg-medical-primary hover:bg-medical-secondary">
+                    <Button 
+                      className="w-full bg-medical-primary hover:bg-medical-secondary"
+                      onClick={() => handleAppointmentRequest(doctor.name)}
+                    >
                       Записаться на приём
                     </Button>
                   </CardContent>
