@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube, FileMedical } from 'lucide-react';
+import { Stethoscope, User, FileText, Settings, Home, Menu, X, Bell, Search, TestTube, FileSymlink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
