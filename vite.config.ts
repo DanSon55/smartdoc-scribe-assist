@@ -20,5 +20,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: '/smartdoc-scribe-assist-main/',
+  // Удаляем базовый URL, чтобы приложение работало по корневому пути
 }));
